@@ -1,0 +1,1 @@
+{"type":"object","properties":{"objective":{"type":"string"},"constraints":{"type":"array"},"evidence":{"type":"array"}},"required":["objective"]}
