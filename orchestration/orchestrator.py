@@ -4,8 +4,26 @@ from AGENTS.perception_integration_agent import PerceptionIntegrationAgent
 from AGENTS.safety_validation_agent import SafetyValidationAgent
 from AGENTS.commissioning_agent import CommissioningAgent
 from AGENTS.lifecycle_reliability_agent import LifecycleReliabilityAgent
+from safety.gate import release_gate
 
-AGENTS = [SystemArchitectAgent(), MotionPlanningAgent(), PerceptionIntegrationAgent(), SafetyValidationAgent(), CommissioningAgent(), LifecycleReliabilityAgent()]
+AGENTS = [
+    SystemArchitectAgent(),
+    MotionPlanningAgent(),
+    PerceptionIntegrationAgent(),
+    SafetyValidationAgent(),
+    CommissioningAgent(),
+    LifecycleReliabilityAgent(),
+]
+
 
 def run(context):
-    return {"system": "F71", "results": [agent.run(context) for agent in AGENTS], "physical_actuation": False}
+    results = [agent.run(context) for agent in AGENTS]
+    governance = release_gate(context)
+    return {
+        "system": "F71",
+        "results": results,
+        "governance": governance,
+        "status": "approved_for_reference_use" if governance["allowed"] else "blocked_pending_review",
+        "physical_actuation": False,
+        "physical_execution_authority": False,
+    }
