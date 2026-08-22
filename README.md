@@ -1,10 +1,11 @@
-# F71 Agentic Industrial Robotics
+# Agentic Industrial Robotics
 
-A standalone multi-agent AI reference implementation for industrial robotics engineering, simulation, safety analysis, commissioning planning, and lifecycle governance.
+**F71 | L3 Gold Standard | v1.0**
 
-## Architecture
+A governed six-agent reference system for industrial robotics engineering, simulation, safety analysis, commissioning planning, and lifecycle reliability.
 
-### Agents
+## Core agents
+
 - [System Architect Agent](AGENTS/system_architect_agent.py)
 - [Motion Planning Agent](AGENTS/motion_planning_agent.py)
 - [Perception Integration Agent](AGENTS/perception_integration_agent.py)
@@ -12,31 +13,42 @@ A standalone multi-agent AI reference implementation for industrial robotics eng
 - [Commissioning Agent](AGENTS/commissioning_agent.py)
 - [Lifecycle Reliability Agent](AGENTS/lifecycle_reliability_agent.py)
 
-### Tools
-- [Requirement Matrix Tool](TOOLS/requirement_matrix_tool.py)
-- [Simulation Tool](TOOLS/simulation_tool.py)
-- [Hazard Register Tool](TOOLS/hazard_register_tool.py)
-- [Interface Audit Tool](TOOLS/interface_audit_tool.py)
-- [Traceability Tool](TOOLS/traceability_tool.py)
+## Gold-standard governance
 
-### Skills
-- [Robotic Cell Architecture](SKILLS/robotic_cell_architecture.py)
-- [Motion Planning Review](SKILLS/motion_planning_review.py)
-- [Safety Case Development](SKILLS/safety_case_development.py)
-- [Commissioning Readiness](SKILLS/commissioning_readiness.py)
-- [Reliability Analysis](SKILLS/reliability_analysis.py)
+F71 is a reference and review system, not a physical robot controller. The release gate fails closed unless hazard review, simulation verification, safety-function verification, safe-state verification, interface review, cybersecurity review, commissioning review, and qualified human approval are complete.
 
-## Supporting layers
+It also blocks unresolved high-risk hazards, failed safety functions, unsafe human-robot separation, unvalidated motion plans, high perception uncertainty, direct robot commands, PLC writes, physical actuation, safety overrides, interlock bypasses, and autonomous commissioning.
 
-`orchestration/`, `memory/`, `state/`, `schemas/`, `prompts/`, `config/`, `safety/`, `observability/`, `evals/`, `benchmarks/`, `examples/`, `tests/`, and `docs/` provide the full reference architecture.
+Physical execution authority: **false**  
+Safety override authority: **false**  
+Autonomous commissioning authority: **false**
+
+## Verification gates
+
+CI runs on Python 3.10, 3.11, and 3.12 and executes:
+
+```bash
+ruff check . --select E9,F63,F7,F82
+python -m pytest -q
+python evals/heldout_suite.py
+python examples/example.py
+python run.py
+```
+
+The behavioral suite includes direct fail-closed tests plus a 10-scenario held-out governance suite.
+
+## Architecture
+
+[`AGENTS/`](AGENTS/) | [`TOOLS/`](TOOLS/) | [`SKILLS/`](SKILLS/) | [`orchestration/`](orchestration/) | [`memory/`](memory/) | [`state/`](state/) | [`schemas/`](schemas/) | [`prompts/`](prompts/) | [`config/`](config/) | [`safety/`](safety/) | [`observability/`](observability/) | [`evals/`](evals/) | [`benchmarks/`](benchmarks/) | [`examples/`](examples/) | [`tests/`](tests/) | [`docs/`](docs/)
 
 ## Safety boundary
 
-This project supports engineering analysis, simulation, documentation, and review. It does not autonomously issue commands to physical robots, PLCs, actuators, or industrial equipment. Any physical deployment requires qualified engineering review, site specific risk assessment, and authorized human control.
+The system may support engineering analysis, simulation, documentation, and review. It must not autonomously issue commands to physical robots, PLCs, actuators, safety systems, or industrial equipment. Any real deployment requires site-specific risk assessment, verified safety functions, qualified engineering review, and authorized human control.
 
 ## Run
 
 ```bash
 python run.py
 python -m pytest -q
+python evals/heldout_suite.py
 ```
